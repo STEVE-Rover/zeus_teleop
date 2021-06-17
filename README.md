@@ -5,9 +5,12 @@ This package is for teleoperating the rover.
 For controlling the rover with a logitech gamepad.
 
 ### How to use
-```bash
-roslaunch steve_teleop teleop_gamepad.launch
-```
+1. Setup your gamepad with [this guide](http://wiki.ros.org/joy/Tutorials/ConfiguringALinuxJoystick)
+2. In `launch/teleop_gamepad.launch` change `js0` for your gamepad ID
+3.
+    ```bash
+    roslaunch steve_teleop teleop_gamepad.launch
+    ```
 
 ### Button mapping
 | Button       | action |
