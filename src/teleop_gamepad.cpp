@@ -56,14 +56,8 @@ void TeleopGamepad::joyCB(const sensor_msgs::Joy::ConstPtr& joy_msg)
         pub_cmd_vel_.publish(twist_msg);
 
     }
-    else
-    {
-        geometry_msgs::Twist twist_msg;
-        twist_msg.linear.x = 0;
-        twist_msg.angular.z = 0;
-
-        pub_cmd_vel_.publish(twist_msg);
-    }
+    // If the deadman is not pressed, no message should be sent because it will keep
+    // it's priority with the twist_mux node.
 }
 
 
