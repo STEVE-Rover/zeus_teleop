@@ -35,3 +35,12 @@ For controlling the rover with a logitech gamepad.
 * ~turbo_max_linear_vel (float, default: 1.5): max linear velocity (m/s) that can be output when in turbo mode.
 * ~turbo_max_angular_vel (float, default: 1): max angular velocity (rad/s) that can be output when in turbo mode.
 
+## zero_twist_publisher
+Publishes a twist message set to zero at a constant rate.
+
+### Published topics
+* zero_twist (geometry_msgs/Twist)
+
+### Parameters
+* rate (float, default 10): Publishing rate
+
