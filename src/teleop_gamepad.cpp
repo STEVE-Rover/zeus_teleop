@@ -25,8 +25,6 @@ TeleopGamepad::TeleopGamepad(ros::NodeHandle nh, ros::NodeHandle private_nh):
         "* turbo_button: " << turbo_button_ <<  "\n" << 
         "* max_linear_vel: " << max_linear_vel_ <<  "\n" << 
         "* max_angular_vel: " << max_angular_vel_ <<  "\n" << std::endl;
-
-    
 }
 
 /*!
