@@ -7,14 +7,22 @@ TeleopGamepad::TeleopGamepad(ros::NodeHandle nh, ros::NodeHandle private_nh):
     // Set up subscribers and publishers
     sub_joy_ = nh_.subscribe("/joy", 1, &TeleopGamepad::joyCB, this);
     pub_cmd_vel_ = nh_.advertise<geometry_msgs::Twist>("cmd_vel", 1);
+    pub_cmd_vel_tank_ = nh_.advertise<steve_teleop::VelocityTargets>("wheel_vel_target2", 1);
 
     // Get params
     private_nh_.param<int>("linear_vel_axis", linear_vel_axis_, 1);
     private_nh_.param<int>("angular_vel_axis", angular_vel_axis_, 0);
     private_nh_.param<int>("deadman_switch", deadman_switch_, 5);
+
+    private_nh_.param<int>("left_vel_axis", left_vel_axis_, 1);
+    private_nh_.param<int>("right_vel_axis", right_vel_axis_, 4);
+    private_nh_.param<int>("slow_vel_axis", slow_vel_axis_, 5);
+    private_nh_.param<int>("deadman_switch_tank", deadman_switch_tank_, 4);
+
     private_nh_.param<int>("turbo_button", turbo_button_, 1);
     private_nh_.param<float>("max_linear_vel", max_linear_vel_, 3);
     private_nh_.param<float>("max_angular_vel", max_angular_vel_, 1);
+
     private_nh_.param<float>("turbo_max_linear_vel", turbo_max_linear_vel_, 3);
     private_nh_.param<float>("turbo_max_angular_vel", turbo_max_angular_vel_, 1.5);
 
@@ -34,12 +42,20 @@ TeleopGamepad::TeleopGamepad(ros::NodeHandle nh, ros::NodeHandle private_nh):
 void TeleopGamepad::joyCB(const sensor_msgs::Joy::ConstPtr& joy_msg)
 {
     bool deadman_pressed = joy_msg->buttons[deadman_switch_];
+    bool deadman_tank_pressed = joy_msg->buttons[deadman_switch_tank_];
+
     bool turbo_button_pressed = joy_msg->buttons[turbo_button_];
     float linear_axis_value = joy_msg->axes[linear_vel_axis_];
     float angular_axis_value = joy_msg->axes[angular_vel_axis_];
+
+    float left_axis_value = joy_msg->axes[left_vel_axis_];
+    float right_axis_value = joy_msg->axes[right_vel_axis_];
+    float slow_axis_value = joy_msg->axes[slow_vel_axis_];
+
     float max_linear_vel = max_linear_vel_;
     float max_angular_vel = max_angular_vel_; 
-    if(deadman_pressed)
+
+    /*if(deadman_pressed)
     {
         if(turbo_button_pressed)
         {
@@ -53,7 +69,26 @@ void TeleopGamepad::joyCB(const sensor_msgs::Joy::ConstPtr& joy_msg)
 
         pub_cmd_vel_.publish(twist_msg);
 
+    }*/
+
+    if(deadman_tank_pressed)
+    {
+        if(turbo_button_pressed)
+        {
+            max_linear_vel = turbo_max_linear_vel_;
+            max_angular_vel = turbo_max_angular_vel_;
+        }
+
+
+        steve_teleop::VelocityTargets tank_msg;
+        tank_msg.left_wheel_vel_target = left_axis_value * max_linear_vel * (0.5+(1 + slow_axis_value)/4);
+        tank_msg.right_wheel_vel_target = right_axis_value * max_linear_vel * (0.5+(1 + slow_axis_value)/4);
+
+        pub_cmd_vel_tank_.publish(tank_msg);
+
     }
+
+	
     // If the deadman is not pressed, no message should be sent because it will keep
     // it's priority with the twist_mux node.
 }
