@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>steve_teleop</name>
+  <name>zeus_teleop</name>
   <version>0.0.0</version>
-  <description>The steve_teleop package</description>
+  <description>The zeus_teleop package</description>
 
   <maintainer email="jeremie.bourque@usherbrooke.ca">jeremie</maintainer>
 
