@@ -1,4 +1,4 @@
-# steve_teleop
+# zeus_teleop
 This package is for teleoperating the rover.
 
 ## teleop_gamepad
@@ -9,7 +9,7 @@ For controlling the rover with a logitech gamepad.
 2. In `launch/teleop_gamepad.launch` change `js0` for your gamepad ID
 3.
     ```bash
-    roslaunch steve_teleop teleop_gamepad.launch
+    roslaunch zeus_teleop teleop_gamepad.launch
     ```
 
 ### Button mapping
